@@ -6,6 +6,17 @@
  * to expose Node.js functionality from the main process.
  */
 
+function listProducts(products) {
+    for (prod of products) {
+        document.getElementById('products').innerHTML += `<li>${prod.name}</li>`
+    }
+}
+
+async function getProduct(id) {
+    product = await window.exposed.getProduct(id)
+    console.log(product)
+}
+
 (async() => {
 
     // Run a function that gets data from main.js
@@ -13,5 +24,9 @@
     
     // Run a function sends data to main.js
     await window.exposed.sendStuffToMain('Stuff from renderer')
-    
+
+    // hämta produkterna från main via preload
+    listProducts(await window.exposed.getProducts())
 })()
+    
+

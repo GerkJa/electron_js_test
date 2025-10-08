@@ -10,7 +10,7 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     },
-    autoHideMenuBar: false // true to hide, press Alt to show when hidden
+    autoHideMenuBar: true // true to hide, press Alt to show when hidden
   })
 
   // and load the index.html of the app.
@@ -34,6 +34,15 @@ app.whenReady().then(() => {
 ipcMain.handle('get-stuff-from-main', () => 'Stuff from main!')
 ipcMain.handle('send-stuff-to-main', async (event, data) => console.log(data))
 
+// Local DB
+const products = [
+  { name: "hat", price: 25.9}, 
+  { name: "shirt", price: 60},
+  { name: "shoes", price: 120}
+]
+
+ipcMain.handle('get-products', () => products)
+ipcMain.handle('get-product-info', async (event, id) => products[id])
 
 app.on('window-all-closed', function () {
   app.quit()
